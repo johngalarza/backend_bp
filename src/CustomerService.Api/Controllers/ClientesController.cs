@@ -69,23 +69,13 @@ public class ClientesController : ControllerBase
             });
         }
 
-        try
-        {
-            var cliente = await _service.CreateAsync(dto);
+        var cliente = await _service.CreateAsync(dto);
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = cliente.Id },
-                cliente
-            );
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new
-            {
-                mensaje = ex.Message
-            });
-        }
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = cliente.Id },
+            cliente
+        );
     }
 
     // PUT /api/clientes/{id}
