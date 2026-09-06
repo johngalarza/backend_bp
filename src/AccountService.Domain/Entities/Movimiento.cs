@@ -19,16 +19,26 @@ public class Movimiento
     }
 
     public Movimiento(
-        string tipoMovimiento,
         decimal valor,
         decimal saldo,
         Guid cuentaId)
     {
+        if (valor == 0)
+            throw new ArgumentException(
+                "El valor del movimiento no puede ser cero.");
+
         Id = Guid.NewGuid();
+
         Fecha = DateTime.UtcNow;
-        TipoMovimiento = tipoMovimiento;
+
         Valor = valor;
+
+        TipoMovimiento = valor > 0
+            ? "Deposito"
+            : "Retiro";
+
         Saldo = saldo;
+
         CuentaId = cuentaId;
     }
 }

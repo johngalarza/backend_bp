@@ -1,9 +1,31 @@
+using AccountService.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using AccountService.Application.Interfaces;
+using AccountService.Application.Services;
+using AccountService.Domain.Repositories;
+using AccountService.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AccountDbContext>(options =>
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("AccountDatabase"));
+});
+
+builder.Services.AddScoped<ICuentaRepository, CuentaRepository>();
+builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
+
+builder.Services.AddScoped<ICuentaService, CuentaService>();
+builder.Services.AddScoped<IMovimientoService, MovimientoService>();
+
 
 var app = builder.Build();
 
@@ -14,7 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 var summaries = new[]
 {
@@ -35,6 +57,8 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapControllers();
 
 app.Run();
 
