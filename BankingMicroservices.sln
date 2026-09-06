@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountService.Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountService.Infrastructure", "src\AccountService.Infrastructure\AccountService.Infrastructure.csproj", "{D4612C92-803C-47CF-AC5C-74FA1D124D76}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0CE5939D-30FD-4C5D-A3A3-A6A9F25EDA01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountService.UnitTests", "tests\AccountService.UnitTests\AccountService.UnitTests.csproj", "{D1A30535-D77C-4968-BA03-BA55B290DC69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,10 @@ Global
 		{D4612C92-803C-47CF-AC5C-74FA1D124D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4612C92-803C-47CF-AC5C-74FA1D124D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4612C92-803C-47CF-AC5C-74FA1D124D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A30535-D77C-4968-BA03-BA55B290DC69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A30535-D77C-4968-BA03-BA55B290DC69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A30535-D77C-4968-BA03-BA55B290DC69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A30535-D77C-4968-BA03-BA55B290DC69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B6F801C3-5EFA-4ED4-AF29-B79C678A49FF} = {83FAB354-23C1-456C-ABE5-1E73FFEDD9E3}
@@ -72,5 +80,6 @@ Global
 		{734432B7-2BA5-432D-AE8E-62A28508DE3D} = {83FAB354-23C1-456C-ABE5-1E73FFEDD9E3}
 		{508ED947-CE5A-4132-9B9D-AF50B1A3836F} = {83FAB354-23C1-456C-ABE5-1E73FFEDD9E3}
 		{D4612C92-803C-47CF-AC5C-74FA1D124D76} = {83FAB354-23C1-456C-ABE5-1E73FFEDD9E3}
+		{D1A30535-D77C-4968-BA03-BA55B290DC69} = {0CE5939D-30FD-4C5D-A3A3-A6A9F25EDA01}
 	EndGlobalSection
 EndGlobal
