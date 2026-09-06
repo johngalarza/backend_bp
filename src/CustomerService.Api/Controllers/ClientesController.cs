@@ -1,6 +1,7 @@
 using CustomerService.Application.DTOs;
 using CustomerService.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 namespace CustomerService.Api.Controllers;
 
@@ -9,10 +10,14 @@ namespace CustomerService.Api.Controllers;
 public class ClientesController : ControllerBase
 {
     private readonly IClienteService _service;
+    private readonly IValidator<CreateClienteDto> _validator;
 
-    public ClientesController(IClienteService service)
+    public ClientesController(
+        IClienteService service,
+        IValidator<CreateClienteDto> validator)
     {
         _service = service;
+        _validator = validator;
     }
 
     // GET /api/clientes
@@ -43,6 +48,27 @@ public class ClientesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateClienteDto dto)
     {
+        var validationResult = await _validator.ValidateAsync(dto);
+
+        if (!validationResult.IsValid)
+        {
+            var errores = validationResult
+                .Errors
+                .GroupBy(error => error.PropertyName)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group
+                        .Select(error => error.ErrorMessage)
+                        .ToArray()
+                );
+
+            return BadRequest(new
+            {
+                mensaje = "La solicitud contiene errores de validación.",
+                errores
+            });
+        }
+
         try
         {
             var cliente = await _service.CreateAsync(dto);

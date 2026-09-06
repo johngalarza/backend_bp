@@ -4,6 +4,8 @@ using CustomerService.Domain.Repositories;
 using CustomerService.Infrastructure.Persistence;
 using CustomerService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using CustomerService.Application.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,8 @@ builder.Services.AddDbContext<CustomerDbContext>(options =>
         builder.Configuration.GetConnectionString("CustomerDatabase")
     );
 });
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateClienteValidator>();
 
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
