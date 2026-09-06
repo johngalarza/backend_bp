@@ -10,7 +10,9 @@ public interface IClienteService
 
     Task<ClienteResponseDto> CreateAsync(CreateClienteDto dto);
 
-    Task<ClienteResponseDto> UpdateAsync(Guid id, UpdateClienteDto dto);
+    Task<ClienteResponseDto?> UpdateAsync(
+        Guid id,
+        UpdateClienteDto dto);
 
-    Task DeleteAsync(Guid id);
+    Task<bool> DeleteAsync(Guid id);
 }

@@ -35,4 +35,20 @@ public class Cliente : Persona
         PasswordHash = passwordHash;
         Estado = true;
     }
+
+    public void ActualizarDatos(
+        string nombre,
+        string genero,
+        int edad,
+        string direccion,
+        string telefono,
+        bool estado)
+    {
+        Nombre = nombre;
+        Genero = genero;
+        Edad = edad;
+        Direccion = direccion;
+        Telefono = telefono;
+        Estado = estado;
+    }
 }
