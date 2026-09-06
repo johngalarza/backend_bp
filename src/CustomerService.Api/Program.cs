@@ -1,4 +1,7 @@
+using CustomerService.Application.Interfaces;
+using CustomerService.Domain.Repositories;
 using CustomerService.Infrastructure.Persistence;
+using CustomerService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 
 builder.Services.AddDbContext<CustomerDbContext>(options =>
 {
