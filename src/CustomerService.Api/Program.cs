@@ -1,3 +1,6 @@
+using CustomerService.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<CustomerDbContext>(options =>
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("CustomerDatabase")
+    );
+});
+
 
 var app = builder.Build();
 
