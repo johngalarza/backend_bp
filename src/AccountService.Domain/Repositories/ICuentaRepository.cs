@@ -8,7 +8,11 @@ public interface ICuentaRepository
 
     Task<Cuenta?> GetByIdAsync(Guid id);
 
-    Task<Cuenta?> GetByNumeroCuentaAsync(string numeroCuenta);
+    Task<Cuenta?> GetByNumeroCuentaAsync(
+        string numeroCuenta);
+
+    Task<IEnumerable<Cuenta>> GetByClienteIdAsync(
+        string clienteId);
 
     Task AddAsync(Cuenta cuenta);
 

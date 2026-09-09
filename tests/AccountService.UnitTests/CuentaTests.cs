@@ -1,4 +1,5 @@
 using AccountService.Domain.Entities;
+using AccountService.Domain.Exceptions;
 
 namespace AccountService.UnitTests;
 
@@ -34,7 +35,7 @@ public class CuentaTests
         );
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<SaldoNoDisponibleException>(
             () => cuenta.AplicarMovimiento(-150m)
         );
 

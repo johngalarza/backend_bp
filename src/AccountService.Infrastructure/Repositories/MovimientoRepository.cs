@@ -24,8 +24,19 @@ public class MovimientoRepository : IMovimientoRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Movimiento>> GetByCuentaIdsAsync(
+        IEnumerable<Guid> cuentaIds)
+    {
+        return await _context.Movimientos
+            .AsNoTracking()
+            .Where(m => cuentaIds.Contains(m.CuentaId))
+            .OrderByDescending(m => m.Fecha)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Movimiento movimiento)
     {
         await _context.Movimientos.AddAsync(movimiento);
+        await _context.SaveChangesAsync();
     }
 }

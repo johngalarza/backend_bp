@@ -26,6 +26,7 @@ builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
 
 builder.Services.AddScoped<ICuentaService, CuentaService>();
 builder.Services.AddScoped<IMovimientoService, MovimientoService>();
+builder.Services.AddScoped<IReporteService, ReporteService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -47,4 +47,13 @@ public class CuentaRepository : ICuentaRepository
 
         return Task.CompletedTask;
     }
+
+    public async Task<IEnumerable<Cuenta>> GetByClienteIdAsync(
+        string clienteId)
+    {
+        return await _context.Cuentas
+            .AsNoTracking()
+            .Where(c => c.ClienteId == clienteId)
+            .ToListAsync();
+    }
 }
