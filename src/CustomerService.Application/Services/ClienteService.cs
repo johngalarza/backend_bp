@@ -2,16 +2,21 @@ using CustomerService.Application.DTOs;
 using CustomerService.Application.Interfaces;
 using CustomerService.Domain.Entities;
 using CustomerService.Domain.Repositories;
+using Shared.Contracts.Events;
 
 namespace CustomerService.Application.Services;
 
 public class ClienteService : IClienteService
 {
     private readonly IClienteRepository _repository;
+    private readonly IClienteEventPublisher _eventPublisher;
 
-    public ClienteService(IClienteRepository repository)
+    public ClienteService(
+        IClienteRepository repository,
+        IClienteEventPublisher eventPublisher)
     {
         _repository = repository;
+        _eventPublisher = eventPublisher;
     }
 
     public async Task<IEnumerable<ClienteResponseDto>> GetAllAsync()
@@ -58,6 +63,16 @@ public class ClienteService : IClienteService
         );
 
         await _repository.AddAsync(cliente);
+
+        var evento = new ClienteCreadoEvent(
+            cliente.Id,
+            cliente.ClienteId,
+            cliente.Nombre,
+            cliente.Identificacion,
+            cliente.Estado
+        );
+
+        await _eventPublisher.PublishClienteCreadoAsync(evento);
 
         return ToResponseDto(cliente);
     }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using CustomerService.Application.Validators;
 using CustomerService.Api.Middleware;
+using CustomerService.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,17 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateClienteValidator>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 
+builder.Services.AddSingleton(new RabbitMqOptions
+{
+    Host = builder.Configuration["RabbitMq:Host"] ?? "localhost",
+    Port = int.Parse(
+        builder.Configuration["RabbitMq:Port"] ?? "5672"
+    ),
+    Username = builder.Configuration["RabbitMq:Username"] ?? "admin",
+    Password = builder.Configuration["RabbitMq:Password"] ?? "admin"
+});
 
+builder.Services.AddScoped<IClienteEventPublisher, RabbitMqClienteEventPublisher>();
 
 var app = builder.Build();
 
