@@ -14,6 +14,8 @@ public class AccountDbContext : DbContext
 
     public DbSet<Movimiento> Movimientos => Set<Movimiento>();
 
+    public DbSet<ClienteReadModel> ClientesReadModel => Set<ClienteReadModel>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -80,6 +82,31 @@ public class AccountDbContext : DbContext
                 x.CuentaId,
                 x.Fecha
             });
+        });
+
+        modelBuilder.Entity<ClienteReadModel>(entity =>
+        {
+            entity.ToTable("clientes_read_model");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.ClienteId)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.HasIndex(x => x.ClienteId)
+                .IsUnique();
+
+            entity.Property(x => x.Nombre)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            entity.Property(x => x.Identificacion)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(x => x.Estado)
+                .IsRequired();
         });
     }
 }

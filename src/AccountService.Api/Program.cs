@@ -5,6 +5,7 @@ using AccountService.Application.Services;
 using AccountService.Domain.Repositories;
 using AccountService.Infrastructure.Repositories;
 using AccountService.Api.Middleware;
+using AccountService.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,18 @@ builder.Services.AddScoped<IMovimientoService, MovimientoService>();
 builder.Services.AddScoped<IReporteService, ReporteService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddSingleton(new RabbitMqOptions
+{
+    Host = builder.Configuration["RabbitMq:Host"] ?? "localhost",
+    Port = int.Parse(
+        builder.Configuration["RabbitMq:Port"] ?? "5672"
+    ),
+    Username = builder.Configuration["RabbitMq:Username"] ?? "admin",
+    Password = builder.Configuration["RabbitMq:Password"] ?? "admin"
+});
+
+builder.Services.AddHostedService<ClienteCreadoConsumer>();
 
 
 var app = builder.Build();
