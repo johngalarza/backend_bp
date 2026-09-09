@@ -41,9 +41,10 @@ public class CuentaRepository : ICuentaRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Cuenta cuenta)
+    public Task UpdateAsync(Cuenta cuenta)
     {
         _context.Cuentas.Update(cuenta);
-        await _context.SaveChangesAsync();
+
+        return Task.CompletedTask;
     }
 }

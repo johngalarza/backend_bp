@@ -27,6 +27,5 @@ public class MovimientoRepository : IMovimientoRepository
     public async Task AddAsync(Movimiento movimiento)
     {
         await _context.Movimientos.AddAsync(movimiento);
-        await _context.SaveChangesAsync();
     }
 }

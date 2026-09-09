@@ -10,12 +10,16 @@ public class MovimientoService : IMovimientoService
     private readonly ICuentaRepository _cuentaRepository;
     private readonly IMovimientoRepository _movimientoRepository;
 
+    private readonly IUnitOfWork _unitOfWork;
+
     public MovimientoService(
         ICuentaRepository cuentaRepository,
-        IMovimientoRepository movimientoRepository)
+        IMovimientoRepository movimientoRepository,
+        IUnitOfWork unitOfWork)
     {
         _cuentaRepository = cuentaRepository;
         _movimientoRepository = movimientoRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<MovimientoResponseDto>>
@@ -28,8 +32,7 @@ public class MovimientoService : IMovimientoService
         return movimientos.Select(ToResponseDto);
     }
 
-    public async Task<MovimientoResponseDto> CreateAsync(
-        CreateMovimientoDto dto)
+    public async Task<MovimientoResponseDto> CreateAsync(CreateMovimientoDto dto)
     {
         if (dto.Valor == 0)
         {
@@ -37,28 +40,33 @@ public class MovimientoService : IMovimientoService
                 "El valor del movimiento no puede ser cero.");
         }
 
-        var cuenta =
-            await _cuentaRepository.GetByIdAsync(dto.CuentaId);
+        Movimiento? movimiento = null;
 
-        if (cuenta is null)
+        await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
-            throw new KeyNotFoundException(
-                "Cuenta no encontrada.");
-        }
+            var cuenta =
+                await _cuentaRepository.GetByIdAsync(dto.CuentaId);
 
-        cuenta.AplicarMovimiento(dto.Valor);
+            if (cuenta is null)
+            {
+                throw new KeyNotFoundException(
+                    "Cuenta no encontrada.");
+            }
 
-        var movimiento = new Movimiento(
-            dto.Valor,
-            cuenta.SaldoDisponible,
-            cuenta.Id
-        );
+            cuenta.AplicarMovimiento(dto.Valor);
 
-        await _cuentaRepository.UpdateAsync(cuenta);
+            movimiento = new Movimiento(
+                dto.Valor,
+                cuenta.SaldoDisponible,
+                cuenta.Id
+            );
 
-        await _movimientoRepository.AddAsync(movimiento);
+            await _cuentaRepository.UpdateAsync(cuenta);
 
-        return ToResponseDto(movimiento);
+            await _movimientoRepository.AddAsync(movimiento);
+        });
+
+        return ToResponseDto(movimiento!);
     }
 
     private static MovimientoResponseDto ToResponseDto(
