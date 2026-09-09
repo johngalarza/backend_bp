@@ -1,3 +1,5 @@
+using AccountService.Domain.Exceptions;
+
 namespace AccountService.Domain.Entities;
 
 public class Cuenta
@@ -49,7 +51,7 @@ public class Cuenta
         var nuevoSaldo = SaldoDisponible + monto;
 
         if (nuevoSaldo<0)
-            throw new InvalidOperationException("Saldo no disponible");
+            throw new SaldoNoDisponibleException();
             
         SaldoDisponible += monto;
     }

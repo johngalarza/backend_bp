@@ -4,6 +4,7 @@ using AccountService.Application.Interfaces;
 using AccountService.Application.Services;
 using AccountService.Domain.Repositories;
 using AccountService.Infrastructure.Repositories;
+using AccountService.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.Services.AddScoped<IMovimientoService, MovimientoService>();
 
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
